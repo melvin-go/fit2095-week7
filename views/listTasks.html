@@ -1,0 +1,27 @@
+<html>
+    <style>
+        table#tasksTable, tr, th, td {
+            border: 1px solid black
+        }
+    </style>
+    <body>
+        <h1>
+            <a href='/'>Home</a>
+            <a href='/addTask'>Add new Task</a>
+        </h1>
+        <table id="tasksTable">
+            <tr>
+                <th>Name</th>
+                <th>Due Date</th>
+                <th>Description</th>
+            </tr>
+            <% for (let i = 0; i < list.length; i++) { %>
+            <tr>
+                <td><%= list[i].taskName %></td>
+                <td><%= list[i].taskDue %></td>
+                <td><%= list[i].taskDesc %></td>
+            </tr>
+            <% } %>
+        </table>
+    </body>
+</html>
