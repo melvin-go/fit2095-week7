@@ -1,0 +1,7 @@
+body {
+    background-color: bisque
+}
+
+table#tasksTable, tr, th, td {
+    border: 1px solid black
+}

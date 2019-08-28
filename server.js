@@ -7,6 +7,7 @@ let taskList = [];
 
 //app.use(express.static("views"));
 app.use(express.static("img"));
+app.use(express.static("css"));
 let filePath = __dirname + '/views/';
 
 // Setup view engine
@@ -32,8 +33,7 @@ app.post('/addTask', function(req, res) {
         taskDue: req.body.taskDue,
         taskDesc: req.body.taskDesc
     })
-    res.send('New Task Added!!');
-    console.log(taskList);
+    res.render('listTasks.html', {list: taskList});
 });
 
 app.get('/listAllTasks', function(req, res){
