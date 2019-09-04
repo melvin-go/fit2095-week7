@@ -28,7 +28,6 @@ mongoDBClient.connect(url, {
 }, function (err, client) {
 
     db = client.db("week6lab");
-    // 4. get collection
     col = db.collection("tasks");
 });
 
