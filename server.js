@@ -13,7 +13,7 @@ class Task {
         this.name = newName;
         this.person = assignTo;
         this.date = dueDate;
-        this.status = newStatus;
+        this.status = newStatus == "inProgress" ? "In-Progress" : "Completed";
         this.desc = newDesc;
     }
 };
@@ -73,25 +73,27 @@ app.get('/listAllTasks', function(req, res){
 });
 
 app.get('/deleteTaskById/:taskId', function(req, res) {
-    col.deleteOne({$eq: {id: parseInt(req.params.taskId)}}, function(err, data) {
+    console.log(req.params.taskId);
+    col.deleteOne({id: {$eq: parseInt(req.params.taskId)}}, function(err, data) {
     });
     res.redirect('/listAllTasks');
 });
 
-app.get('/deleteAllCompleted', function(req, res) {
-    col.deleteMany({$eq: {status: true}}, function(err, obj) {
+app.get('/deleteCompleted', function(req, res) {
+    col.deleteMany({status: "Completed"}, function(err, obj) {
     });
     res.redirect('/listAllTasks');
 });
 
 app.get('/updateStatus/:taskId/:newStatus', function(req, res) {
+    let newStatus = "";
     if (req.params.newStatus == "Completed") {
-        let newStatus = true;
+        newStatus = "Completed";
     } else if (req.params.newStatus == "InProgress") {
-        let newStatus = false;
+        newStatus = "In-Progress";
     }
 
-    col.updateOne({ id: parseInt(rew.params.taskId) }, { $set: { status: newStatus } }, { upsert: false }, function (err, result) {
+    col.updateOne({ id: {$eq: parseInt(req.params.taskId)} }, { $set: { status: newStatus } }, { upsert: false }, function (err, result) {
     });
     res.redirect('/listAllTasks');
 });

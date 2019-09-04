@@ -9,19 +9,22 @@
         </h1>
         <br/>
         <form action='/addTask' method='POST'>
-            Task Name
+            Task Name: 
             <input type='text' name='taskName'>
             </br>
-            Assign to
+            Assign to: 
             <input type='text' name='taskPerson'>
             </br>
-            Task Due
-            <input type='text' name='taskDue'>
+            Task Due: 
+            <input type="date" name="taskDue">
             </br>
-            Task Status
-            <input type='text' name='taskStatus'>
+            Task Status: 
+            <select name= 'taskStatus'>
+                <option value="completed">Completed</option>
+                <option value="inProgress">In Progress</option>
+            </select>
             </br>
-            Task Desc
+            Task Description: 
             <input type='text' name='taskDesc'>
             </br>
             <button>Submit</button>
