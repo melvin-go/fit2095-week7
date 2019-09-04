@@ -1,9 +1,36 @@
 let express = require("express");
 let bodyParser = require("body-parser");
+let mongodb = require("mongodb");
 
 let app = express();
+let mongoDBClient = mongodb.MongoClient;
 
 let taskList = [];
+
+class Task {
+    constructor (newName, assignTo, dueDate, newStatus, newDesc) {
+        this.id = Math.ceil(Math.random() * 1000);
+        this.name = newName;
+        this.person = assignTo;
+        this.date = dueDate;
+        this.status = newStatus;
+        this.desc = newDesc;
+    }
+};
+
+let db = null;
+let col = null;
+let url = "mongodb://localhost:27017";
+
+mongoDBClient.connect(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}, function (err, client) {
+
+    db = client.db("week6lab");
+    // 4. get collection
+    col = db.collection("tasks");
+});
 
 //app.use(express.static("views"));
 app.use(express.static("img"));
@@ -28,16 +55,45 @@ app.get('/addTask', function(req, res) {
 });
 
 app.post('/addTask', function(req, res) {
-    taskList.push({
-        taskName: req.body.taskName,
-        taskDue: req.body.taskDue,
-        taskDesc: req.body.taskDesc
-    })
-    res.render('listTasks.html', {list: taskList});
+    let newDoc = new Task(req.body.taskName, req.body.taskPerson, req.body.taskDue, req.body.taskStatus, req.body.taskDesc);
+    col.insertOne(newDoc);
+    // taskList.push({
+    //     taskName: req.body.taskName,
+    //     taskDue: req.body.taskDue,
+    //     taskDesc: req.body.taskDesc
+    // })
+    res.redirect('/listAllTasks');
 });
 
 app.get('/listAllTasks', function(req, res){
-    res.render('listTasks.html', {list: taskList});
+    // res.render('listTasks.html', {list: taskList});
+    col.find({}).toArray(function (err, data) {
+        res.render('listTasks.html', {list: data});
+    })
+});
+
+app.get('/deleteTaskById/:taskId', function(req, res) {
+    col.deleteOne({$eq: {id: parseInt(req.params.taskId)}}, function(err, data) {
+    });
+    res.redirect('/listAllTasks');
+});
+
+app.get('/deleteAllCompleted', function(req, res) {
+    col.deleteMany({$eq: {status: true}}, function(err, obj) {
+    });
+    res.redirect('/listAllTasks');
+});
+
+app.get('/updateStatus/:taskId/:newStatus', function(req, res) {
+    if (req.params.newStatus == "Completed") {
+        let newStatus = true;
+    } else if (req.params.newStatus == "InProgress") {
+        let newStatus = false;
+    }
+
+    col.updateOne({ id: parseInt(rew.params.taskId) }, { $set: { status: newStatus } }, { upsert: false }, function (err, result) {
+    });
+    res.redirect('/listAllTasks');
 });
 
 app.listen(8080);
