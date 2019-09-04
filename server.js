@@ -55,26 +55,27 @@ app.get('/addTask', function(req, res) {
 });
 
 app.post('/addTask', function(req, res) {
-    let newDoc = new Task(req.body.taskName, req.body.taskPerson, req.body.taskDue, req.body.taskStatus, req.body.taskDesc);
+    let dueDate = new Date(req.body.taskDue);
+    dueDate.setHours(0);
+
+    let newDoc = new Task(req.body.taskName, req.body.taskPerson, dueDate, req.body.taskStatus, req.body.taskDesc);
+
     col.insertOne(newDoc);
-    // taskList.push({
-    //     taskName: req.body.taskName,
-    //     taskDue: req.body.taskDue,
-    //     taskDesc: req.body.taskDesc
-    // })
     res.redirect('/listAllTasks');
 });
 
 app.get('/listAllTasks', function(req, res){
-    // res.render('listTasks.html', {list: taskList});
     col.find({}).toArray(function (err, data) {
         res.render('listTasks.html', {list: data});
     })
 });
 
-app.get('/deleteTaskById/:taskId', function(req, res) {
-    console.log(req.params.taskId);
-    col.deleteOne({id: {$eq: parseInt(req.params.taskId)}}, function(err, data) {
+app.get('/deleteTasks', function (req, res) {
+    res.sendFile(filePath + 'deleteTasks.html');
+});
+
+app.post('/deleteTaskById', function(req, res) {
+    col.deleteOne({id: {$eq: parseInt(req.body.taskId)}}, function(err, data) {
     });
     res.redirect('/listAllTasks');
 });
@@ -96,6 +97,21 @@ app.get('/updateStatus/:taskId/:newStatus', function(req, res) {
     col.updateOne({ id: {$eq: parseInt(req.params.taskId)} }, { $set: { status: newStatus } }, { upsert: false }, function (err, result) {
     });
     res.redirect('/listAllTasks');
+});
+
+app.get('/findNotTommorow', function(req, res) {
+    let today = new Date();
+    let tomDate = today.getDate() + 1;
+    let tomMonth = today.getMonth() + 1;
+    let tomYear = today.getFullYear();
+    let tommorow =  new Date(`${tomYear}-${tomMonth}-${tomDate}`);
+
+    tommorow.setHours(0);
+    console.log(tommorow);
+    
+    col.find({date: {$ne: tommorow}}).toArray(function (err, data) {
+        res.render('listTasks.html', {list: data});
+    });
 });
 
 app.listen(8080);
