@@ -20,7 +20,7 @@ class Task {
 
 let db = null;
 let col = null;
-let url = "mongodb://localhost:27017";
+let url = "mongodb://" + process.argv[2] + ":27017/";
 
 mongoDBClient.connect(url, {
     useNewUrlParser: true,
