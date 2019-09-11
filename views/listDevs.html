@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1>
+            <a href='/'>Home</a>
+            <a href='/addDev'>Add new Developer</a>
+        </h1>
+        <table id="tasksTable">
+            <tr>
+                <th>Id</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Level</th>
+                <th>State</th>
+                <th>Suburb</th>
+                <th>Street</th>
+                <th>Unit</th>
+            </tr>
+            <% for (let i = 0; i < list.length; i++) { %>
+            <tr>
+                <td><%= list[i].devId %></td>
+                <td><%= list[i].name.lastName %></td>
+                <td><%= list[i].name.firstName %></td>
+                <td><%= list[i].level %></td>
+                <td><%= list[i].address.state %></td>
+                <td><%= list[i].address.suburb %></td>
+                <td><%= list[i].address.street %></td>
+                <td><%= list[i].address.unit %></td>
+            </tr>
+            <% } %>
+        </table>
+    </body>
+</html>

@@ -1,12 +1,13 @@
 <html>
     <head>
-            <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <h1>
             <a href='/'>Home</a>
             <a href='/listAllTasks'>List Tasks</a>
             <a href='/deleteTasks'>Delete Tasks</a>
+            <a href='/listAllDevs'>List all Developers</a>          
         </h1>
         <br/>
         <form action='/addTask' method='POST'>
@@ -14,7 +15,7 @@
             <input type='text' name='taskName'>
             </br>
             Assign to: 
-            <input type='text' name='taskPerson'>
+            <input type='number' name='taskAssignTo'>
             </br>
             Task Due: 
             <input type="date" name="taskDue">

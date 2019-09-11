@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1>
+            <a href='/'>Home</a>
+            <a href='/listAllDevs'>List Developers</a>
+        </h1>
+    </body>
+    <br/>
+        <form action='/addDev' method='POST'>
+            First Name: 
+            <input type='text' name='devFName'>
+            </br>
+            Last Name: 
+            <input type='text' name='devLName'>
+            </br>
+            Level: 
+            <select name= 'devLevel'>
+                <option value="beginner">Beginner</option>
+                <option value="expert">Expert</option>
+            </select>
+            </br>
+            Address
+            </br>
+            State: 
+            <input type='text' name='devState'>
+            </br>
+            Suburb: 
+            <input type='text' name='devSuburb'>
+            </br>
+            Street: 
+            <input type='text' name='devStreet'>
+            </br>
+            Unit: 
+            <input type='text' name='devUnit'>
+            </br>
+            <button>Submit</button>
+        </form>
+</html>
